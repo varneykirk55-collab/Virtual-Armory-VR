@@ -54,6 +54,42 @@
 
 ---
 
+## ⚔️ Samurai Duel (one-on-one combat prototype)
+
+A scripted samurai opponent built on top of the existing XR rig, swords and shields. Architecture notes and the file plan are in [`Docs/SAMURAI_DUEL_PLAN.md`](Docs/SAMURAI_DUEL_PLAN.md). The code is in `Assets/SamuraiDuel/`.
+
+### One-time setup in the editor
+1. Open the project in **Unity 2022.3.44f1** (with Android Build Support, plus OpenJDK and the Android SDK & NDK tools).
+2. Open `Assets/Scenes/SampleScene.unity`.
+3. Run **Tools ▸ Samurai Duel ▸ Build Duel In Open Scene**. This:
+   - builds the samurai, HUD, red start plate and arena ring 4 m in front of the XR Origin,
+   - adds `SwordHitDetector` + `Blocker` to the swords and a `Blocker` to the shields,
+   - adds `PlayerCombatant` (head/torso hurtbox, HP, damage flash) to the XR Origin,
+   - turns off any training dummy standing inside the ring.
+
+   Move the `SamuraiDuel` object if you want the ring somewhere else.
+4. Select each sword and check the cyan **BladeBase → BladeTip** gizmo runs along the blade. If it doesn't, drag the two child markers.
+5. Run **Tools ▸ Samurai Duel ▸ Apply Quest 2 Build Settings** (Android target, IL2CPP, ARM64, min API 29, 72 Hz physics).
+6. Save the scene.
+
+### How to play
+- Grab a sword (grip). A shield in the other hand is optional.
+- Step on the **red plate** or press **A/X** to start. After a 3-second countdown: *Hajime!*
+- **Attacking**: swing for real. Damage scales with blade speed, and slow pokes don't count. Head hits do ×1.5. Hitting the samurai during its wind-up interrupts the attack. It is armoured only during the cut itself.
+- **Defending**: when its blade glows red, the cut is coming from where the sword is raised. Block it with the shield or your sword. Swing *into* the cut to **parry**, which staggers it for a free opening. You can also step back about half a metre.
+- Combo counter, score and a saved best score are shown on the scoreboard. Hold **A/X** for 1 s to restart mid-fight. After victory or defeat, press **A/X** or step on the plate.
+- In the editor, the XR Device Simulator works, and **R** restarts.
+
+### Build & sideload to Quest 2
+1. Turn on developer mode for the headset in the Meta Horizon phone app (Devices ▸ Headset settings ▸ Developer mode). Connect it with USB-C and accept **Allow USB debugging** inside the headset.
+2. **File ▸ Build Settings** ▸ Platform **Android** (Switch Platform if needed). Make sure `Scenes/SampleScene` is ticked. Set **Run Device** to your Quest.
+3. **Project Settings ▸ XR Plug-in Management ▸ Android tab**: tick **Oculus**.
+4. Optional: in **Player ▸ Android ▸ Other Settings**, give the app a unique **Package Name** (e.g. `com.yourname.samuraiduel`) so it doesn't collide with other template builds.
+5. **Build And Run** installs and launches it. Or **Build** an `.apk` and sideload it with `adb install -r SamuraiDuel.apk` or SideQuest.
+6. On the headset: **Library ▸ Unknown Sources ▸ project showcase VR**.
+
+---
+
 ## 📘 Documentation
 
 - 📄 [Game Design Document (GDD)](./Armory%20Practice%20GDD.docx)
