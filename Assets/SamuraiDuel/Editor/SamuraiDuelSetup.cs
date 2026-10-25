@@ -285,9 +285,10 @@ namespace SamuraiDuel.EditorTools
             return palette;
         }
 
-        private static Material GetMaterial(string name, Color color, float metallic, float smoothness, Color emission)
+        internal static Material GetMaterial(string name, Color color, float metallic, float smoothness, Color emission,
+            Texture baseMap = null, Texture emissionMap = null, string folder = MaterialFolder)
         {
-            string path = $"{MaterialFolder}/{name}.mat";
+            string path = $"{folder}/{name}.mat";
             var material = AssetDatabase.LoadAssetAtPath<Material>(path);
             if (material == null)
             {
@@ -308,11 +309,20 @@ namespace SamuraiDuel.EditorTools
                 material.SetFloat("_Smoothness", smoothness);
             if (material.HasProperty("_Glossiness"))
                 material.SetFloat("_Glossiness", smoothness);
+            if (baseMap != null)
+            {
+                if (material.HasProperty("_BaseMap"))
+                    material.SetTexture("_BaseMap", baseMap);
+                if (material.HasProperty("_MainTex"))
+                    material.SetTexture("_MainTex", baseMap);
+            }
 
             if (emission.maxColorComponent > 0f)
             {
                 material.EnableKeyword("_EMISSION");
                 material.SetColor("_EmissionColor", emission);
+                if (emissionMap != null && material.HasProperty("_EmissionMap"))
+                    material.SetTexture("_EmissionMap", emissionMap);
                 material.globalIlluminationFlags = MaterialGlobalIlluminationFlags.None;
             }
             else

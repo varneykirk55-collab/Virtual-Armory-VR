@@ -65,7 +65,9 @@ namespace SamuraiDuel
             restartAction = new InputAction("Duel Restart", InputActionType.Button);
             restartAction.AddBinding("<XRController>{RightHand}/primaryButton"); // A
             restartAction.AddBinding("<XRController>{LeftHand}/primaryButton");  // X
-            restartAction.AddBinding("<Keyboard>/r");                            // editor / device simulator
+            // Editor / XR Device Simulator. Not R: the simulator uses R for "Toggle Mouse Transformation Mode".
+            restartAction.AddBinding("<Keyboard>/enter");
+            restartAction.AddBinding("<Keyboard>/numpadEnter");
         }
 
         private void OnEnable()

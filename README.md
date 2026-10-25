@@ -69,8 +69,9 @@ A scripted samurai opponent built on top of the existing XR rig, swords and shie
 
    Move the `SamuraiDuel` object if you want the ring somewhere else.
 4. Select each sword and check the cyan **BladeBase → BladeTip** gizmo runs along the blade. If it doesn't, drag the two child markers.
-5. Run **Tools ▸ Samurai Duel ▸ Apply Quest 2 Build Settings** (Android target, IL2CPP, ARM64, min API 29, 72 Hz physics).
-6. Save the scene.
+5. Run **Tools ▸ Samurai Duel ▸ Build Dojo Around Duel** (see *Dojo & katanas* below).
+6. Run **Tools ▸ Samurai Duel ▸ Apply Quest 2 Build Settings** (Android target, IL2CPP, ARM64, min API 29, 72 Hz physics).
+7. Save the scene.
 
 ### How to play
 - Grab a sword (grip). A shield in the other hand is optional.
@@ -78,7 +79,26 @@ A scripted samurai opponent built on top of the existing XR rig, swords and shie
 - **Attacking**: swing for real. Damage scales with blade speed, and slow pokes don't count. Head hits do ×1.5. Hitting the samurai during its wind-up interrupts the attack. It is armoured only during the cut itself.
 - **Defending**: when its blade glows red, the cut is coming from where the sword is raised. Block it with the shield or your sword. Swing *into* the cut to **parry**, which staggers it for a free opening. You can also step back about half a metre.
 - Combo counter, score and a saved best score are shown on the scoreboard. Hold **A/X** for 1 s to restart mid-fight. After victory or defeat, press **A/X** or step on the plate.
-- In the editor, the XR Device Simulator works, and **R** restarts.
+- In the editor, the XR Device Simulator works (see *Testing in the editor* below), and **Enter** restarts.
+
+### Dojo & katanas
+**Tools ▸ Samurai Duel ▸ Build Dojo Around Duel** builds a dojo around the duel ring. All its art is generated into `Assets/SamuraiDuel/Generated/`: low-poly meshes, painted textures and URP materials, with no external assets.
+- **Room**: plank floor, a tatami fighting area, timber posts and beams, shoji screens, plaster walls and a beamed ceiling.
+- **Alcove (tokonoma)**: a hanging scroll with an ink circle (ensō), a katana on a display stand, red banners, and floor and hanging paper lanterns.
+- **Katanas**: two grabbable katanas (`Generated/Prefabs/Katana.prefab`) on a sword rack to your front-right. They use the same XRGrabInteractable + SwordHitDetector + Blocker setup as the other swords. The samurai's sword is swapped for the same katana model.
+- **Existing scene**: the original swords and shields move onto a table to your front-left. Prototype props inside the room are deactivated and listed in the Console. The water pistol is put away. Ctrl+Z undoes the whole build.
+- **Quest cost**: the room geometry casts no shadows, so the room stays sunlit and shadow cost stays low. It adds about 15 draw calls.
+
+### Testing in the editor (XR Device Simulator)
+The `XR Device Simulator` sample is the XRI 2.6.3 version (separate Simulator, Controller and Hand action assets). It's stripped from player builds automatically, so it can't take over the Quest's head tracking.
+
+1. Press **Play**. Mouse looks around and **WASD/Q/E** moves the head (*FPS mode*). Click the Game view if the cursor isn't captured.
+2. **Grab a katana**:
+   - Quick way: press **F**. The nearest free sword snaps into the right hand. Press **F** again to drop it.
+   - Native way: press **Y** to take control of the right controller, move it onto the katana handle with the mouse and **WASD**, then **hold G** to grip.
+3. **Swing**: with the right controller selected (**Y**), hold **Left Ctrl** (rotate mode) and flick the mouse. Rotation turns the wrist and gives far more blade speed than dragging the hand. **R** toggles translate/rotate permanently. **Esc** returns to FPS mode.
+4. **Start the duel**: press **Enter**, or **B** while a controller is selected (the simulated A button). The samurai walks in, so you don't need to move. Hits flash the samurai white, and the HP bar and combo counter update.
+5. **Restart**: press **Enter** after a win or loss. Hold it for 1 s to restart mid-fight.
 
 ### Build & sideload to Quest 2
 1. Turn on developer mode for the headset in the Meta Horizon phone app (Devices ▸ Headset settings ▸ Developer mode). Connect it with USB-C and accept **Allow USB debugging** inside the headset.
